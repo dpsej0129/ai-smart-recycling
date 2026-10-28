@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 스마트 분리수거함 | micro:bit</title>
+  <link rel="stylesheet" href="./style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.5/dist/teachablemachine-image.min.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+<body>
+<main>
+  <h1>♻️ AI 스마트 분리수거함</h1>
+  <p>Teachable Machine 이미지 AI + Web Serial + 마이크로비트 V1.5</p>
+  <div class="notice">① MakeCode 프로그램 업로드 → ② AI 모델 로드 → ③ 이미지 업로드 또는 카메라 선택 → ④ USB 시리얼 연결 → ⑤ 분류 후 전송</div>
+  <div class="layout">
+    <section aria-label="모델과 입력 및 연결">
+      <div class="panel">
+        <h2>1. AI 모델 설정</h2>
+        <label for="modelUrl">Teachable Machine 이미지 모델 공유 URL</label>
+        <input id="modelUrl" type="text" placeholder="https://teachablemachine.withgoogle.com/models/모델ID/" autocomplete="off" spellcheck="false">
+        <div class="buttons" style="margin-top:11px"><button id="loadModel">AI 모델 불러오기</button></div>
+        <div id="modelStatus" class="status" role="status">모델을 불러오지 않았습니다.</div>
+      </div>
+      <div class="panel">
+        <h2>2. 입력 방식</h2>
+        <div class="tabs">
+          <button class="tab selected" id="uploadTab" aria-pressed="true">🖼 이미지 업로드</button>
+          <button class="tab" id="cameraTab" aria-pressed="false">📷 실시간 카메라</button>
+        </div>
+        <div id="uploadArea">
+          <label for="fileInput">사진 파일 선택 (JPG·PNG 등)</label>
+          <input id="fileInput" type="file" accept="image/*">
+          <div class="preview">
+            <img id="uploadedImage" class="hidden" alt="업로드 이미지 미리보기">
+            <span id="uploadPlaceholder" class="muted">파일을 선택하면 미리보기가 표시됩니다.</span>
+          </div>
+          <div class="buttons" style="margin-top:12px"><button id="analyzeImage">이 이미지 분석</button></div>
+        </div>
+        <div id="cameraArea" class="hidden">
+          <div class="preview" id="cameraPreview"><span id="cameraPlaceholder" class="muted">카메라 시작 버튼을 누르세요.</span></div>
+          <div class="buttons" style="margin-top:12px"><button id="startCamera">카메라 시작</button><button id="stopCamera" class="red">카메라 중지</button></div>
+          <div class="muted" style="margin-top:8px">모드 이동 시 카메라는 자동 종료됩니다. 이 탭을 활성 상태로 유지하세요.</div>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>3. 마이크로비트 시리얼 연결</h2>
+        <div class="buttons"><button id="connect" class="green">USB 시리얼 연결</button><button id="disconnect" class="secondary">연결 해제</button></div>
+        <div id="serialStatus" class="status" role="status">연결되지 않음 · 115200bps</div>
+        <p class="small">MakeCode에서 업로드한 뒤 다운로드/시리얼 창의 연결을 종료하고 사용하세요. HTTPS 또는 localhost의 Chrome/Edge에서 실행하세요.</p>
+      </div>
+    </section>
+    <section aria-label="판단과 전송 및 결과">
+      <div class="panel">
+        <h2>4. AI 판단 및 전송 설정</h2>
+        <p class="small">Teachable Machine에서 만든 클래스 이름을 그대로 전송합니다. 예: a → a, 종이 → 종이</p>
+        <div id="classMappings" class="muted">모델을 불러오면 클래스 이름이 표시됩니다.</div>
+        <label for="threshold">인식 기준: <strong id="thresholdLabel">80%</strong></label>
+        <input id="threshold" type="range" min="40" max="100" value="80" step="5" style="width:100%">
+        <label><input type="checkbox" id="autoSend" checked> AI 판단 후 마이크로비트에 자동 전송</label>
+        <div class="muted">이미지 모드: 분석 버튼 누를 때만 전송 / 카메라 모드: 동일 결과가 안정적으로 유지되고 일정 시간이 지났을 때 전송</div>
+      </div>
+      <div class="panel">
+        <h2>5. AI 분석 결과</h2>
+        <div id="topResult" class="result">아직 인식 결과가 없습니다.</div>
+        <div id="probabilities"></div>
+        <button id="sendLast" class="green" disabled>현재 판단 결과 전송</button>
+        <div class="buttons" id="testButtons" style="margin-top:9px"></div>
+        <p class="small">시험 버튼도 모델의 클래스 이름 그대로 전송합니다. 초기화 버튼은 <code>RESET</code>을 보냅니다.</p>
+      </div>
+      <div class="panel">
+        <h2>6. 통신 로그</h2>
+        <div class="log" id="log">준비됨</div>
+      </div>
+    </section>
+  </div>
+</main>
+</body>
+</html>

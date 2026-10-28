@@ -1,0 +1,36 @@
+:root{font-family:system-ui,'Malgun Gothic',sans-serif;color-scheme:dark;background:#101827;color:#f1f5f9}
+*{box-sizing:border-box}
+body{margin:0;padding:24px}
+main{max-width:1100px;margin:auto}
+h1{margin:0 0 5px}
+p{color:#9aaac0;margin:6px 0 20px}
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.panel{background:#1b293d;border:1px solid #32445d;padding:19px;border-radius:15px;margin-bottom:16px}
+h2{font-size:19px;margin:0 0 14px}
+label{display:block;margin:12px 0 7px;color:#dbeafe;font-size:14px}
+input,select,button{font:inherit}
+input[type=text],select{width:100%;padding:11px;background:#101827;border:1px solid #52657d;border-radius:8px;color:white}
+button{border:0;padding:11px 14px;border-radius:9px;background:#2563eb;color:white;font-weight:650;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+.secondary{background:#455772}
+.green{background:#058467}
+.red{background:#b33444}
+.buttons{display:flex;gap:8px;flex-wrap:wrap}
+.buttons>*{flex:1}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.tab{background:#394a61}
+.tab.selected{background:#2563eb}
+.preview{min-height:260px;background:#111d2d;border:2px dashed #435773;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:12px}
+.preview img,.preview canvas{max-width:100%;width:100%;height:auto;object-fit:contain}
+.muted{color:#9aaac0;font-size:13px}
+.small{font-size:13px}
+.hidden{display:none!important}
+.result{padding:12px;background:#122137;border-radius:9px;margin:7px 0}
+.bar{height:13px;background:#334155;border-radius:9px;overflow:hidden}
+.fill{background:#34d399;height:100%}
+.probrow{margin:11px 0}
+.probhead{display:flex;justify-content:space-between;margin-bottom:5px}
+.status{padding:10px 12px;background:#121f32;border-radius:9px;margin-top:10px;white-space:pre-wrap}
+.log{max-height:160px;overflow:auto;font-size:12px;color:#cbd5e1;background:#101827;padding:12px;border-radius:9px;white-space:pre-wrap}
+.notice{background:#12382f;border-left:4px solid #34d399;padding:12px;border-radius:6px;margin-bottom:18px;color:#d5f8e7}
+@media(max-width:760px){.layout{grid-template-columns:1fr}body{padding:12px}.panel{padding:14px}}
